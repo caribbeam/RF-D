@@ -30,6 +30,208 @@
                 android:orientation="vertical"
                 android:padding="16dp">
 
+                <!-- ÜRÜN BİLGİLERİ BAŞLIK -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Ürün Bilgileri"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/primary"
+                    android:layout_marginBottom="8dp" />
+
+                <!-- Ürün Kodu (YENİ - KRİTİK) -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilProductCode"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Ürün Kodu (DELL-XPS-001)"
+                    app:helperText="Benzersiz ürün kodu giriniz"
+                    app:helperTextEnabled="true">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etProductCode"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textCapCharacters"
+                        android:maxLines="1" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Ürün Adı -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilProductName"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:hint="@string/product_name">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etProductName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text"
+                        android:maxLines="1" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Miktar ve Birim (Yan Yana) -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal"
+                    android:weightSum="2">
+
+                    <!-- Miktar -->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/tilQuantity"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:layout_weight="1"
+                        android:hint="@string/product_quantity">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etQuantity"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="number"
+                            android:maxLines="1"
+                            android:text="1" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <!-- Birim (YENİ) -->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/tilUnit"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:hint="Birim">
+
+                        <AutoCompleteTextView
+                            android:id="@+id/actvUnit"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="none"
+                            android:text="Adet" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </LinearLayout>
+
+                <!-- Minimum Stok Seviyesi (YENİ) -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilMinStock"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:hint="Minimum Stok Seviyesi"
+                    app:helperText="Düşük stok uyarısı için"
+                    app:helperTextEnabled="true">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etMinStock"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="number"
+                        android:maxLines="1"
+                        android:text="5" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- KONUM BİLGİLERİ BAŞLIK (YENİ) -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginBottom="8dp"
+                    android:text="Konum Bilgileri"
+                    android:textColor="@color/primary"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <!-- Koridor, Raf, Seviye (Yan Yana) -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="3">
+
+                    <!-- Koridor (YENİ) -->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/tilCorridor"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="4dp"
+                        android:layout_weight="1"
+                        android:hint="Koridor">
+
+                        <AutoCompleteTextView
+                            android:id="@+id/actvCorridor"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="none" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <!-- Raf (YENİ) -->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/tilShelf"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginEnd="4dp"
+                        android:layout_weight="1"
+                        android:hint="Raf">
+
+                        <AutoCompleteTextView
+                            android:id="@+id/actvShelf"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="none" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <!-- Seviye (YENİ) -->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/tilLevel"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:layout_weight="1"
+                        android:hint="Seviye">
+
+                        <AutoCompleteTextView
+                            android:id="@+id/actvLevel"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="none" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </LinearLayout>
+
+                <!-- RFID VE BARKOD BAŞLIK -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginBottom="8dp"
+                    android:text="RFID ve Barkod"
+                    android:textColor="@color/primary"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
                 <!-- RFID Etiketi -->
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/tilRfidTag"
@@ -38,7 +240,9 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/product_rfid"
                     app:endIconDrawable="@android:drawable/ic_menu_search"
-                    app:endIconMode="custom">
+                    app:endIconMode="custom"
+                    app:helperText="Opsiyonel - Sonra eklenebilir"
+                    app:helperTextEnabled="true">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/etRfidTag"
@@ -52,13 +256,13 @@
                 <!-- RFID Okuma Butonu -->
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnScanRfid"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:text="@string/scan_rfid"
                     app:cornerRadius="8dp"
-                    app:icon="@android:drawable/ic_menu_search"
-                    style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
+                    app:icon="@android:drawable/ic_menu_search" />
 
                 <!-- Barkod -->
                 <com.google.android.material.textfield.TextInputLayout
@@ -66,10 +270,12 @@
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="8dp"
                     android:hint="@string/product_barcode"
                     app:endIconDrawable="@android:drawable/ic_menu_camera"
-                    app:endIconMode="custom">
+                    app:endIconMode="custom"
+                    app:helperText="Opsiyonel"
+                    app:helperTextEnabled="true">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/etBarcode"
@@ -83,68 +289,13 @@
                 <!-- Barkod Okuma Butonu -->
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnScanBarcode"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:text="@string/scan_barcode"
                     app:cornerRadius="8dp"
-                    app:icon="@android:drawable/ic_menu_camera"
-                    style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
-
-                <!-- Ürün Adı -->
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/tilProductName"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:hint="@string/product_name">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/etProductName"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="text"
-                        android:maxLines="1" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <!-- Miktar -->
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/tilQuantity"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:hint="@string/product_quantity">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/etQuantity"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="number"
-                        android:maxLines="1"
-                        android:text="1" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <!-- Lokasyon -->
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/tilLocation"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:hint="@string/product_location">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/etLocation"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="text"
-                        android:maxLines="1" />
-
-                </com.google.android.material.textfield.TextInputLayout>
+                    app:icon="@android:drawable/ic_menu_camera" />
 
                 <!-- Açıklama -->
                 <com.google.android.material.textfield.TextInputLayout
@@ -170,19 +321,43 @@
 
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- Kaydet Butonu -->
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnSave"
+        <!-- Butonlar -->
+        <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="56dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="@string/save"
-            android:textSize="16sp"
-            app:cornerRadius="8dp"
-            app:icon="@android:drawable/ic_menu_save"
+            android:orientation="horizontal"
+            android:weightSum="2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/cardForm" />
+            app:layout_constraintTop_toBottomOf="@id/cardForm">
+
+            <!-- Kaydet Butonu -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnSave"
+                android:layout_width="0dp"
+                android:layout_height="56dp"
+                android:layout_marginEnd="8dp"
+                android:layout_weight="1"
+                android:text="@string/save"
+                android:textSize="16sp"
+                app:cornerRadius="8dp"
+                app:icon="@android:drawable/ic_menu_save" />
+
+            <!-- Barkod Yazdır Butonu (YENİ) -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnPrintLabel"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="0dp"
+                android:layout_height="56dp"
+                android:layout_marginStart="8dp"
+                android:layout_weight="1"
+                android:text="Barkod Yazdır"
+                android:textSize="16sp"
+                app:cornerRadius="8dp"
+                app:icon="@android:drawable/ic_menu_save" />
+
+        </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
