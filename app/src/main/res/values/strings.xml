@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Depo RFID Yönetim</string>
+    
+    <!-- Ana Menü -->
+    <string name="menu_product_entry">Ürün Girişi</string>
+    <string name="menu_rfid_scan">RFID Okuma</string>
+    <string name="menu_inventory">Envanter Sayımı</string>
+    <string name="menu_printer">Barkod Yazdır</string>
+    <string name="menu_product_list">Ürün Listesi</string>
+    <string name="menu_settings">Ayarlar</string>
+    
+    <!-- Genel -->
+    <string name="save">Kaydet</string>
+    <string name="cancel">İptal</string>
+    <string name="delete">Sil</string>
+    <string name="edit">Düzenle</string>
+    <string name="search">Ara</string>
+    <string name="ok">Tamam</string>
+    <string name="yes">Evet</string>
+    <string name="no">Hayır</string>
+    <string name="loading">Yükleniyor...</string>
+    <string name="success">Başarılı</string>
+    <string name="error">Hata</string>
+    <string name="warning">Uyarı</string>
+    
+    <!-- Ürün Girişi -->
+    <string name="product_entry_title">Yeni Ürün Girişi</string>
+    <string name="product_name">Ürün Adı</string>
+    <string name="product_barcode">Barkod</string>
+    <string name="product_rfid">RFID Etiketi</string>
+    <string name="product_quantity">Miktar</string>
+    <string name="product_location">Lokasyon/Raf</string>
+    <string name="product_description">Açıklama</string>
+    <string name="scan_rfid">RFID Oku</string>
+    <string name="scan_barcode">Barkod Oku</string>
+    <string name="product_saved">Ürün kaydedildi</string>
+    <string name="product_save_error">Ürün kaydedilemedi</string>
+    <string name="fill_required_fields">Lütfen gerekli alanları doldurun</string>
+    
+    <!-- RFID Okuma -->
+    <string name="rfid_scan_title">RFID Okuma</string>
+    <string name="start_scan">Okumaya Başla</string>
+    <string name="stop_scan">Okumayı Durdur</string>
+    <string name="clear_list">Listeyi Temizle</string>
+    <string name="tags_found">Bulunan Etiket: %d</string>
+    <string name="rfid_tag">RFID Etiketi</string>
+    <string name="rssi">Sinyal Gücü (RSSI)</string>
+    <string name="read_count">Okuma Sayısı</string>
+    <string name="scanning">Taranıyor...</string>
+    <string name="scan_stopped">Tarama durduruldu</string>
+    <string name="rfid_init_error">RFID okuyucu başlatılamadı</string>
+    
+    <!-- Envanter -->
+    <string name="inventory_title">Envanter Sayımı</string>
+    <string name="start_inventory">Sayıma Başla</string>
+    <string name="stop_inventory">Sayımı Bitir</string>
+    <string name="inventory_report">Rapor Al</string>
+    <string name="expected_count">Beklenen</string>
+    <string name="actual_count">Sayılan</string>
+    <string name="difference">Fark</string>
+    <string name="inventory_complete">Envanter sayımı tamamlandı</string>
+    <string name="inventory_saved">Envanter kaydedildi</string>
+    
+    <!-- Yazıcı -->
+    <string name="printer_title">Barkod Yazdırma</string>
+    <string name="connect_printer">Yazıcıya Bağlan</string>
+    <string name="disconnect_printer">Bağlantıyı Kes</string>
+    <string name="print">Yazdır</string>
+    <string name="printer_connected">Yazıcı bağlandı</string>
+    <string name="printer_disconnected">Yazıcı bağlantısı kesildi</string>
+    <string name="printer_error">Yazıcı hatası</string>
+    <string name="select_printer">Yazıcı Seç</string>
+    <string name="bluetooth_printers">Bluetooth Yazıcılar</string>
+    <string name="wifi_printers">WiFi Yazıcılar</string>
+    <string name="print_success">Yazdırma başarılı</string>
+    <string name="print_failed">Yazdırma başarısız</string>
+    
+    <!-- Ürün Listesi -->
+    <string name="product_list_title">Ürün Listesi</string>
+    <string name="total_products">Toplam Ürün: %d</string>
+    <string name="no_products">Henüz ürün yok</string>
+    <string name="product_details">Ürün Detayları</string>
+    <string name="delete_product">Ürünü Sil</string>
+    <string name="delete_confirm">Bu ürünü silmek istediğinizden emin misiniz?</string>
+    <string name="product_deleted">Ürün silindi</string>
+    
+    <!-- Ayarlar -->
+    <string name="settings_title">Ayarlar</string>
+    <string name="api_settings">API Ayarları</string>
+    <string name="api_url">API URL</string>
+    <string name="api_key">API Anahtarı</string>
+    <string name="rfid_settings">RFID Ayarları</string>
+    <string name="rfid_power">Güç Seviyesi</string>
+    <string name="rfid_frequency">Frekans (MHz)</string>
+    <string name="printer_settings">Yazıcı Ayarları</string>
+    <string name="printer_type">Yazıcı Tipi</string>
+    <string name="test_connection">Bağlantıyı Test Et</string>
+    <string name="sync_data">Verileri Senkronize Et</string>
+    <string name="sync_success">Senkronizasyon başarılı</string>
+    <string name="sync_failed">Senkronizasyon başarısız</string>
+    <string name="about">Hakkında</string>
+    <string name="version">Versiyon</string>
+    
+    <!-- Hata Mesajları -->
+    <string name="error_network">Ağ bağlantısı hatası</string>
+    <string name="error_database">Veritabanı hatası</string>
+    <string name="error_permission">İzin gerekli</string>
+    <string name="error_bluetooth">Bluetooth hatası</string>
+    <string name="error_camera">Kamera hatası</string>
+    <string name="error_rfid">RFID okuyucu hatası</string>
+    
+    <!-- İzin Mesajları -->
+    <string name="permission_bluetooth">Bluetooth izni yazıcı bağlantısı için gereklidir</string>
+    <string name="permission_location">Konum izni Bluetooth cihazları taramak için gereklidir</string>
+    <string name="permission_camera">Kamera izni barkod okumak için gereklidir</string>
+    <string name="permission_storage">Depolama izni raporları kaydetmek için gereklidir</string>
+    
+    <!-- Demo Mod -->
+    <string name="demo_mode">Demo Modu</string>
+    <string name="demo_mode_active">Demo modu aktif - Gerçek RFID okuyucu bağlı değil</string>
+    <string name="simulated_tag">Simüle Edilmiş Etiket</string>
+</resources>
