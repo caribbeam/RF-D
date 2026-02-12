@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
+import com.warehouse.rfid.MainActivity
 import com.warehouse.rfid.R
 import com.warehouse.rfid.data.database.AppDatabase
 import com.warehouse.rfid.user.UserManager
