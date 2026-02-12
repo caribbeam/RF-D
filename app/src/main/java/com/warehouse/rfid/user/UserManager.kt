@@ -4,8 +4,12 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.provider.Settings
 import com.warehouse.rfid.data.database.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 import java.security.MessageDigest
 
 /**
@@ -22,6 +26,9 @@ class UserManager(private val context: Context, private val database: AppDatabas
     
     // Aktif oturum
     private var currentSession: UserSessionEntity? = null
+    
+    // Coroutine scope
+    private val scope = CoroutineScope(Dispatchers.Main + SupervisorJob())
     
     // Terminal ID (cihaz benzersiz ID)
     val terminalId: String by lazy {
@@ -53,7 +60,7 @@ class UserManager(private val context: Context, private val database: AppDatabas
         val userId = prefs.getLong("last_user_id", -1)
         if (userId != -1L) {
             // Arka planda kullanıcıyı yükle
-            kotlinx.coroutines.GlobalScope.launch {
+            scope.launch {
                 val user = database.userDao().getUserById(userId)
                 if (user != null && user.isActive) {
                     _currentUser.value = user
@@ -156,12 +163,15 @@ class UserManager(private val context: Context, private val database: AppDatabas
      * Aktivite kaydet (KRİTİK)
      */
     suspend fun logActivity(
-        user: UserEntity = _currentUser.value ?: return,
+        user: UserEntity? = _currentUser.value,
         activityType: ActivityType,
         description: String,
         productCode: String? = null,
         quantity: Int? = null
     ) {
+        // Kullanıcı yoksa çık
+        if (user == null) return
+        
         try {
             val activity = UserActivityEntity(
                 userId = user.id,
