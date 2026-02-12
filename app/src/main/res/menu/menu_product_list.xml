@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <!-- Arama -->
+    <item
+        android:id="@+id/action_search"
+        android:icon="@android:drawable/ic_menu_search"
+        android:title="Ara"
+        app:actionViewClass="androidx.appcompat.widget.SearchView"
+        app:showAsAction="always|collapseActionView" />
+
+    <!-- Sıralama -->
+    <item
+        android:id="@+id/action_sort"
+        android:icon="@android:drawable/ic_menu_sort_by_size"
+        android:title="Sırala"
+        app:showAsAction="never">
+        <menu>
+            <item
+                android:id="@+id/action_sort_name"
+                android:title="İsme Göre" />
+            <item
+                android:id="@+id/action_sort_code"
+                android:title="Koda Göre" />
+            <item
+                android:id="@+id/action_sort_quantity_asc"
+                android:title="Miktara Göre (Artan)" />
+            <item
+                android:id="@+id/action_sort_quantity_desc"
+                android:title="Miktara Göre (Azalan)" />
+        </menu>
+    </item>
+
+</menu>

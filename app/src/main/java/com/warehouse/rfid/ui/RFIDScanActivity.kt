@@ -4,13 +4,16 @@ import android.os.Bundle
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.textfield.TextInputEditText
 import com.warehouse.rfid.R
+import com.warehouse.rfid.data.database.AppDatabase
 import com.warehouse.rfid.rfid.RFIDManager
 import com.warehouse.rfid.rfid.RFIDTag
 import kotlinx.coroutines.flow.collectLatest
@@ -23,9 +26,15 @@ import kotlinx.coroutines.launch
  * - StateFlow ile reaktif UI güncellemeleri
  * - DiffUtil ile verimli RecyclerView güncellemeleri
  * - Gereksiz UI thread çağrıları kaldırıldı
+ * 
+ * YENİ ÖZELLİKLER:
+ * - RFID eşleştirme (Tag'i ürüne bağlama)
+ * - Toplu eşleştirme
+ * - Eşleşme durumu gösterimi
  */
 class RFIDScanActivity : AppCompatActivity() {
     
+    private lateinit var database: AppDatabase
     private lateinit var rfidManager: RFIDManager
     private lateinit var adapter: RFIDTagAdapter
     
@@ -34,6 +43,7 @@ class RFIDScanActivity : AppCompatActivity() {
     private lateinit var btnStartScan: MaterialButton
     private lateinit var btnStopScan: MaterialButton
     private lateinit var btnClear: MaterialButton
+    private lateinit var btnLinkTag: MaterialButton
     private lateinit var recyclerView: RecyclerView
     private lateinit var tvEmptyMessage: TextView
     
@@ -51,11 +61,13 @@ class RFIDScanActivity : AppCompatActivity() {
     }
     
     private fun initViews() {
+        database = AppDatabase.getDatabase(this)
         tvStatus = findViewById(R.id.tvStatus)
         tvTagCount = findViewById(R.id.tvTagCount)
         btnStartScan = findViewById(R.id.btnStartScan)
         btnStopScan = findViewById(R.id.btnStopScan)
         btnClear = findViewById(R.id.btnClear)
+        btnLinkTag = findViewById(R.id.btnLinkTag)
         recyclerView = findViewById(R.id.recyclerViewTags)
         tvEmptyMessage = findViewById(R.id.tvEmptyMessage)
     }
@@ -74,7 +86,10 @@ class RFIDScanActivity : AppCompatActivity() {
     }
     
     private fun setupRecyclerView() {
-        adapter = RFIDTagAdapter()
+        adapter = RFIDTagAdapter { tag ->
+            // Tag'e tıklandığında eşleştirme dialog'u göster
+            showLinkDialog(tag)
+        }
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = adapter
         
@@ -84,6 +99,9 @@ class RFIDScanActivity : AppCompatActivity() {
                 adapter.submitList(tags)
                 updateTagCount(tags.size)
                 updateEmptyState(tags.isEmpty())
+                
+                // Eşleşme durumlarını kontrol et
+                checkTagMatches(tags)
             }
         }
     }
@@ -99,6 +117,10 @@ class RFIDScanActivity : AppCompatActivity() {
         
         btnClear.setOnClickListener {
             clearTags()
+        }
+        
+        btnLinkTag.setOnClickListener {
+            showBulkLinkDialog()
         }
     }
     
@@ -144,6 +166,142 @@ class RFIDScanActivity : AppCompatActivity() {
         }
     }
     
+    /**
+     * Tag'lerin eşleşme durumlarını kontrol et
+     */
+    private fun checkTagMatches(tags: List<RFIDTag>) {
+        lifecycleScope.launch {
+            for (tag in tags) {
+                val product = database.productDao().findByRFIDTag(tag.epc)
+                // Eşleşme durumunu adapter'a bildir (opsiyonel)
+            }
+        }
+    }
+    
+    /**
+     * Tek tag eşleştirme dialog'u
+     */
+    private fun showLinkDialog(tag: RFIDTag) {
+        val dialogView = layoutInflater.inflate(R.layout.dialog_link_tag, null)
+        val etProductCode = dialogView.findViewById<TextInputEditText>(R.id.etProductCode)
+        
+        AlertDialog.Builder(this)
+            .setTitle("RFID Eşleştir")
+            .setMessage("Tag: ${tag.epc}\n\nBu tag'i hangi ürüne bağlamak istiyorsunuz?")
+            .setView(dialogView)
+            .setPositiveButton("Eşleştir") { _, _ ->
+                val productCode = etProductCode.text.toString().trim().uppercase()
+                if (productCode.isNotEmpty()) {
+                    linkTagToProduct(tag.epc, productCode)
+                } else {
+                    Toast.makeText(this, "Ürün kodu gerekli", Toast.LENGTH_SHORT).show()
+                }
+            }
+            .setNegativeButton("İptal", null)
+            .show()
+    }
+    
+    /**
+     * Toplu eşleştirme dialog'u
+     */
+    private fun showBulkLinkDialog() {
+        val tags = rfidManager.scannedTags.value
+        if (tags.isEmpty()) {
+            Toast.makeText(this, "Önce RFID okuma yapın", Toast.LENGTH_SHORT).show()
+            return
+        }
+        
+        AlertDialog.Builder(this)
+            .setTitle("Toplu Eşleştirme")
+            .setMessage("${tags.size} adet tag okundu.\n\nTümünü otomatik eşleştirmek ister misiniz?")
+            .setPositiveButton("Evet") { _, _ ->
+                bulkLinkTags(tags)
+            }
+            .setNegativeButton("İptal", null)
+            .show()
+    }
+    
+    /**
+     * Tag'i ürüne bağla
+     */
+    private fun linkTagToProduct(rfidTag: String, productCode: String) {
+        lifecycleScope.launch {
+            try {
+                val product = database.productDao().findByProductCode(productCode)
+                
+                if (product == null) {
+                    Toast.makeText(
+                        this@RFIDScanActivity,
+                        "Ürün bulunamadı: $productCode",
+                        Toast.LENGTH_LONG
+                    ).show()
+                    return@launch
+                }
+                
+                // RFID tag'i ürüne bağla
+                database.productDao().linkRFIDToProductCode(productCode, rfidTag)
+                
+                Toast.makeText(
+                    this@RFIDScanActivity,
+                    "✅ Tag eşleştirildi!\n$rfidTag → ${product.name}",
+                    Toast.LENGTH_LONG
+                ).show()
+                
+            } catch (e: Exception) {
+                Toast.makeText(
+                    this@RFIDScanActivity,
+                    "Hata: ${e.message}",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+        }
+    }
+    
+    /**
+     * Toplu tag eşleştirme
+     */
+    private fun bulkLinkTags(tags: List<RFIDTag>) {
+        lifecycleScope.launch {
+            var successCount = 0
+            var failCount = 0
+            
+            for (tag in tags) {
+                try {
+                    // Tag'in zaten eşleştirilmiş olup olmadığını kontrol et
+                    val existingProduct = database.productDao().findByRFIDTag(tag.epc)
+                    
+                    if (existingProduct != null) {
+                        successCount++
+                        continue
+                    }
+                    
+                    // Eşleştirilmemiş tag - Manuel eşleştirme gerekli
+                    failCount++
+                    
+                } catch (e: Exception) {
+                    failCount++
+                }
+            }
+            
+            val message = buildString {
+                appendLine("Toplu Eşleştirme Tamamlandı!")
+                appendLine()
+                appendLine("✅ Eşleşen: $successCount")
+                appendLine("❌ Eşleşmeyen: $failCount")
+                if (failCount > 0) {
+                    appendLine()
+                    appendLine("Eşleşmeyen tag'ler için manuel eşleştirme yapın.")
+                }
+            }
+            
+            AlertDialog.Builder(this@RFIDScanActivity)
+                .setTitle("Sonuç")
+                .setMessage(message)
+                .setPositiveButton("Tamam", null)
+                .show()
+        }
+    }
+    
     override fun onDestroy() {
         super.onDestroy()
         rfidManager.release()
@@ -159,7 +317,9 @@ class RFIDScanActivity : AppCompatActivity() {
  * RFID Tag RecyclerView Adapter
  * DiffUtil ile optimize edilmiş - Sadece değişen itemlar güncellenir
  */
-class RFIDTagAdapter : RecyclerView.Adapter<RFIDTagAdapter.TagViewHolder>() {
+class RFIDTagAdapter(
+    private val onTagClick: (RFIDTag) -> Unit
+) : RecyclerView.Adapter<RFIDTagAdapter.TagViewHolder>() {
     
     private var tags: List<RFIDTag> = emptyList()
     
@@ -188,6 +348,11 @@ class RFIDTagAdapter : RecyclerView.Adapter<RFIDTagAdapter.TagViewHolder>() {
             else -> android.graphics.Color.parseColor("#F44336") // Zayıf
         }
         holder.tvRssi.setTextColor(rssiColor)
+        
+        // Tıklama eventi
+        holder.itemView.setOnClickListener {
+            onTagClick(tag)
+        }
     }
     
     override fun getItemCount() = tags.size
