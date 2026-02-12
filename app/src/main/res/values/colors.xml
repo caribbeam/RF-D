@@ -40,4 +40,8 @@
     <color name="rfid_scanning">#4CAF50</color>
     <color name="rfid_stopped">#F44336</color>
     <color name="rfid_idle">#9E9E9E</color>
+    
+    <!-- Info Box Renkleri -->
+    <color name="info_background">#E3F2FD</color>
+    <color name="info_text">#1976D2</color>
 </resources>
