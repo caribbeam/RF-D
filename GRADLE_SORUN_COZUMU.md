@@ -148,6 +148,60 @@ rmdir /s /q %USERPROFILE%\.gradle\caches
 
 ---
 
+## ⚠️ YENİ HATA: Kotlin Compile Daemon
+
+```
+Daemon compilation failed: Could not connect to Kotlin compile daemon
+java.lang.RuntimeException: Could not connect to Kotlin compile daemon
+```
+
+### ÇÖZÜM:
+
+#### 1. Android Studio'yu Tamamen Kapat ve Yeniden Başlat
+```
+1. Android Studio'yu kapat (File > Exit)
+2. Task Manager'ı aç (Ctrl+Shift+Esc)
+3. "java.exe" ve "studio64.exe" process'lerini sonlandır
+4. Android Studio'yu tekrar aç
+5. Projeyi aç
+6. Build > Clean Project
+7. Build > Rebuild Project
+```
+
+#### 2. Gradle Daemon'u Durdur
+```cmd
+cd c:/Users/site/Desktop/rd
+.\gradlew.bat --stop
+```
+
+#### 3. Gradle Cache'i Temizle
+```cmd
+rmdir /s /q %USERPROFILE%\.gradle\caches
+rmdir /s /q %USERPROFILE%\.gradle\daemon
+```
+
+#### 4. Android Studio Cache'i Temizle
+```
+1. Android Studio'da: File > Invalidate Caches / Restart
+2. "Invalidate and Restart" butonuna tıkla
+3. Android Studio yeniden başlar
+4. Projeyi aç
+5. Gradle sync bekle
+6. Build > Rebuild Project
+```
+
+#### 5. Bilgisayarı Yeniden Başlat
+```
+En garantili çözüm:
+1. Tüm programları kapat
+2. Bilgisayarı yeniden başlat
+3. Android Studio'yu aç
+4. Projeyi aç
+5. Build yap
+```
+
+---
+
 ## 🔍 SORUN TESPİTİ
 
 ### Ağ Bağlantısını Test Et:
