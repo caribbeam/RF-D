@@ -32,6 +32,64 @@ class SqlServerManager(
     // Bağlantı
     private var connection: Connection? = null
     
+    init {
+        // Config dosyasından varsayılan ayarları yükle
+        loadDefaultConfig()
+    }
+    
+    /**
+     * Config dosyasından varsayılan ayarları yükle
+     */
+    private fun loadDefaultConfig() {
+        try {
+            val properties = java.util.Properties()
+            context.assets.open("db_config.properties").use { inputStream ->
+                properties.load(inputStream)
+            }
+            
+            // Varsayılan bağlantıyı al (oztuzun, afm, veya afp)
+            val defaultConnection = properties.getProperty("default.connection", "oztuzun")
+            
+            // Bağlantı bilgilerini yükle
+            serverIp = properties.getProperty("$defaultConnection.server", "")
+            serverPort = properties.getProperty("$defaultConnection.port", "1433")
+            databaseName = properties.getProperty("$defaultConnection.database", "")
+            username = properties.getProperty("$defaultConnection.username", "")
+            password = properties.getProperty("$defaultConnection.password", "")
+            
+            Log.d(TAG, "Config yüklendi: $defaultConnection veritabanı ($serverIp:$serverPort/$databaseName)")
+            
+        } catch (e: Exception) {
+            Log.e(TAG, "Config yükleme hatası: ${e.message}")
+        }
+    }
+    
+    /**
+     * Farklı bir veritabanına geç (oztuzun, afm, afp)
+     */
+    fun switchDatabase(dbName: String) {
+        try {
+            val properties = java.util.Properties()
+            context.assets.open("db_config.properties").use { inputStream ->
+                properties.load(inputStream)
+            }
+            
+            serverIp = properties.getProperty("$dbName.server", "")
+            serverPort = properties.getProperty("$dbName.port", "1433")
+            databaseName = properties.getProperty("$dbName.database", "")
+            username = properties.getProperty("$dbName.username", "")
+            password = properties.getProperty("$dbName.password", "")
+            
+            // Mevcut bağlantıyı kapat
+            disconnect()
+            
+            Log.d(TAG, "Veritabanı değiştirildi: $dbName ($serverIp:$serverPort/$databaseName)")
+            
+        } catch (e: Exception) {
+            Log.e(TAG, "Veritabanı değiştirme hatası: ${e.message}")
+        }
+    }
+    
     /**
      * Bağlantı ayarlarını yapılandır
      */
