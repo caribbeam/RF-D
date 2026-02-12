@@ -331,7 +331,9 @@ class InventoryActivity : AppCompatActivity() {
                     }
                     
                     if (unmatchedTags.isNotEmpty()) {
-                        appendLine("❌ EŞLEŞMEYENappendLine("  • $tag")
+                        appendLine("❌ EŞLEŞMEYEN ETİKETLER:")
+                        unmatchedTags.forEach { tag ->
+                            appendLine("  • $tag")
                         }
                     }
                 }
